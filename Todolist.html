@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>ToDoList</title>
+        <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+        <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+        <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+        
+        <style>
+            
+            #bodystyle{
+                background-image: url("todoimg.jpg");
+            }
+            /* #tablestyle{
+                color:#2a2725;
+                font-family: Garamond, serif;
+                font-size: 20px;
+            } */
+
+            #tablesetting{
+                
+            margin-left:30%;
+            width:40%;
+            background-color:black
+        }
+            
+
+            #headstyle{
+                background-color:green ;
+                color:white;
+                font-family: Garamond, serif;
+                font-size: 50px;
+                text-align: center;
+            }
+            #button {
+                /* background-color: #4CAF50; */
+                /* border: 1px solid black; */
+                color: #4CAF50;
+                padding: 7px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 27px;
+                margin: 4px 2px;
+                cursor: pointer;
+                }
+
+            input[type=text] {
+                width: 40%;
+                padding: 7px 40px;
+                margin: 15px 0;
+                box-sizing: border-box;
+                border: 5px solid green;
+                border-radius: 10px;
+                text-align:center;
+                font-size: 26px;
+                font-family: Garamond, serif;
+                
+            }
+            #todostyle{
+                color:whitesmoke;
+                font-size: 26px;
+                font-family: Garamond, serif;
+            }
+        </style>
+    
+    
+    </head>
+
+    <body id="bodystyle">
+        <div id="root"></div>
+        <div id="app">
+            <script type="text/babel">
+                class Todo extends React.Component{
+
+                    constructor(props)
+                    {
+                        super(props);
+                        this.state={
+                            tasks:[],
+                            input: "",
+                            index:-1,
+                            arr: []
+                        };
+                    }
+                    // <h2 id="headstyle"> Number of tasks: {this.state.tasks.length}</h2>
+                    render(){
+                        return(
+                        <div id="tablestyle">
+                            <table class="table table-hover" id="tablesetting">
+                                
+                                <thead id="headstyle">
+                                    <td>ToDoList</td>
+                                    <td>{this.state.tasks.length} Tasks</td>
+                                </thead>
+                                
+                                <tbody>
+                                    {this.state.tasks.map((task,index) =>
+                                        <tr key={index}>
+                                            <td id="todostyle">{task}</td>
+                                            <td >
+                                                <div id="button">
+                                                    <button type="button" class="btn btn-success" value={index} onClick={this.deleteval}>Delete</button>
+                                                </div>
+                                            </td>
+                                        
+                                        </tr>
+                                        
+                                        )}
+                                <div id="root">
+                                    <br/>  
+                                    <input type="text"  onChange={this.handleChange} value={this.state.input} />
+                                    <div id="button">
+                                        <button type="button" class="btn btn-success" onClick={this.addtask }>Add Task </button>
+                                    </div>
+                                    
+                                
+                                </div>
+                            </tbody>
+
+                            </table>
+                        </div>
+
+                        );   
+                    }
+
+                    deleteval =(ele) =>{
+                        
+                        this.state.arr = [...this.state.arr,this.state.tasks.splice(ele.target.value,1)];
+                        this.setState({tasks:this.state.tasks});
+                        this.setState({arr: this.state.arr});
+                    }
+
+                    handleChange=(event) =>{
+                            this.setState({
+                                input: event.target.value
+                            });
+
+                            
+                    }
+                    addtask=() => {
+                        this.setState(state =>({
+                            tasks: [...state.tasks, state.input]
+                        })
+                        )
+                        this.setState({input: ""})
+                    }
+                }
+            ReactDOM.render(<Todo/>, document.querySelector("#root"))
+            </script>
+        </div>
+    </body>
+
+
+</html>

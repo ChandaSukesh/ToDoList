@@ -89,7 +89,7 @@
                     render(){
                         return(
                         <div id="tablestyle">
-                            <table class="table table-hover" id="tablesetting">
+                            <table class="table" id="tablesetting">
                                 
                                 <thead id="headstyle">
                                     <td>ToDoList</td>
@@ -121,11 +121,42 @@
                             </tbody>
 
                             </table>
+                            
+                            
+                            <table class="table" id="tablesetting">
+                                
+                                <thead id="headstyle">
+                                    <td>Recycle Bin</td>
+                                    <td>{this.state.arr.length} Tasks</td>
+                                </thead>
+                                
+                                <tbody>
+                                    {this.state.arr.map((rtask,index) =>
+                                        <tr key={index}>
+                                            <td id="todostyle">{rtask}</td>
+                                            <td >
+                                                <div id="button">
+                                                    <button type="button" class="btn btn-success" value={index} onClick={this.Recycleval}>Delete</button>
+                                                </div>
+                                            </td>
+                                        
+                                        </tr>
+                                        
+                                        )}
+                                
+                            </tbody>
+
+                            </table>
                         </div>
 
                         );   
                     }
 
+                    Recycleval=(event)=>{
+                        var index=event.target.value
+                        var delvalue=this.state.arr.splice(index,1);
+                        this.setState({arr:this.state.arr});
+                    }
                     deleteval =(ele) =>{
                         
                         this.state.arr = [...this.state.arr,this.state.tasks.splice(ele.target.value,1)];
@@ -133,9 +164,12 @@
                         this.setState({arr: this.state.arr});
                     }
 
+                    
+
                     handleChange=(event) =>{
+                        var input=event.target.value;
                             this.setState({
-                                input: event.target.value
+                                input:input
                             });
 
                             
@@ -146,6 +180,24 @@
                         })
                         )
                         this.setState({input: ""})
+                    }
+
+                    getTodo=()=>{
+                        fetch('https://raw.githubusercontent.com/ChandaSukesh/ToDoList/main/Task.json')
+                        .then(resp=>resp.json())
+                        .then(root=> {
+                            this.setState({tasks:root});
+                        
+
+                        });
+                    }
+
+                    componentDidMount(){
+                        this.getTodo();
+                    }
+                    
+                    componentWillUnmount(){
+
                     }
                 }
             ReactDOM.render(<Todo/>, document.querySelector("#root"))
